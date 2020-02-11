@@ -18,6 +18,7 @@ class CardsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarController?.navigationItem.title = "Your Cards"
         cardsView.cardsCV.dataSource = self
         cardsView.cardsCV.delegate = self
         cardsView.cardsCV.register(CardsCell.self, forCellWithReuseIdentifier: "cardsCell")

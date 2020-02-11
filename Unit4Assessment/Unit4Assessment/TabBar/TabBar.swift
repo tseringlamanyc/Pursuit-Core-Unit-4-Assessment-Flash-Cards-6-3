@@ -10,21 +10,24 @@ import UIKit
 
 class TabBar: UITabBarController {
     
-    private var cardsVC: CardsVC = {
+    private lazy var cardsVC: CardsVC = {
        let vc = CardsVC()
         vc.tabBarItem = UITabBarItem(title: "Cards", image: UIImage(systemName: "creditcard.fill"), tag: 0)
+        vc.navigationItem.title = "Your cards"
         return vc
     }()
     
-    private var createVC: CreateVC = {
+    private lazy var createVC: CreateVC = {
        let vc = CreateVC()
         vc.tabBarItem = UITabBarItem(title: "Create", image: UIImage(systemName: "plus.square.fill"), tag: 1)
+        vc.navigationItem.title = "Create here"
         return vc
     }()
 
-    private var searchVC: SearchVC = {
+    private lazy var searchVC: SearchVC = {
         let vc = SearchVC()
         vc.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 2)
+        vc.navigationItem.title = "Search"
         return vc
     }()
 

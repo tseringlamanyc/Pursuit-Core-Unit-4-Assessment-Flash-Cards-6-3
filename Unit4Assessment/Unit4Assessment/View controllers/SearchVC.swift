@@ -26,6 +26,7 @@ class SearchVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarController?.navigationItem.title = "Search"
         searchView.searchCV.dataSource = self
         searchView.searchCV.delegate = self
         searchView.searchCV.register(SearchCell.self, forCellWithReuseIdentifier: "searchCell")

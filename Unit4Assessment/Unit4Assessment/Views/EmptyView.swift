@@ -24,7 +24,7 @@ class EmptyView: UIView {
         label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         label.textAlignment = .center
         label.numberOfLines = 4
-        label.text = "NO ITEMS SAVED"
+        label.text = "NO CARDS CREATED"
         return label
     }()
     
