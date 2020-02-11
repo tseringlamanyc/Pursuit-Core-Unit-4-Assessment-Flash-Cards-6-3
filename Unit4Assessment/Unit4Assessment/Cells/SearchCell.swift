@@ -1,5 +1,5 @@
 //
-//  CardsCell.swift
+//  SearchCell.swift
 //  Unit4Assessment
 //
 //  Created by Tsering Lama on 2/11/20.
@@ -8,13 +8,12 @@
 
 import UIKit
 
-class CardsCell: UICollectionViewCell {
+class SearchCell: UICollectionViewCell {
     
     public lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = UIFont.preferredFont(forTextStyle: .headline)
-        label.text = "What is ...?"
         label.alpha = 1
         return label
     }()
@@ -23,14 +22,13 @@ class CardsCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = UIFont.preferredFont(forTextStyle: .title3)
-        label.text = "slflsjfljslfjsfjsdf;sjf;ljs;lfj;lsdjf;sdjflsjlf;jslfjksdjfl;sjfl;sjfdl;jsd;lfjsdjfl;"
         label.alpha = 0
         return label
     }()
     
     public lazy var moreButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "list.dash"), for: .normal)
+        button.setImage(UIImage(systemName: "plus.square.fill"), for: .normal)
         button.alpha = 1
         return button
     }()
@@ -46,9 +44,9 @@ class CardsCell: UICollectionViewCell {
     }
     
     private func commonInit() {
-        setupTitle()
-        setupAnswer()
         setupButton()
+        setupAnswer()
+        setupTitle()
     }
     
     private func setupButton() {
@@ -81,4 +79,10 @@ class CardsCell: UICollectionViewCell {
             answerLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
         ])
     }
+
+    public func updateUI(card: Card) {
+        titleLabel.text = card.cardTitle
+        answerLabel.text = card.facts.joined(separator: " ")
+    }
+
 }
