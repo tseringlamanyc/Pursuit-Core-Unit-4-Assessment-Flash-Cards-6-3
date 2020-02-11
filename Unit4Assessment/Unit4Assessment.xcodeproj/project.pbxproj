@@ -17,6 +17,8 @@
 		52A36D0B23F2FEF200891B5B /* CardsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A36D0A23F2FEF200891B5B /* CardsModel.swift */; };
 		52A36D0E23F2FF0700891B5B /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A36D0D23F2FF0700891B5B /* APIClient.swift */; };
 		52A36D1023F2FF2A00891B5B /* AlertFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A36D0F23F2FF2A00891B5B /* AlertFile.swift */; };
+		52A36D1523F3059700891B5B /* CardsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A36D1423F3059700891B5B /* CardsCell.swift */; };
+		52A36D1723F30A6B00891B5B /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A36D1623F30A6B00891B5B /* EmptyView.swift */; };
 		5790239823F2EE39000AA216 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5790239723F2EE39000AA216 /* AppDelegate.swift */; };
 		5790239A23F2EE39000AA216 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5790239923F2EE39000AA216 /* SceneDelegate.swift */; };
 		5790239C23F2EE39000AA216 /* CardsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5790239B23F2EE39000AA216 /* CardsVC.swift */; };
@@ -45,6 +47,8 @@
 		52A36D0A23F2FEF200891B5B /* CardsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsModel.swift; sourceTree = "<group>"; };
 		52A36D0D23F2FF0700891B5B /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		52A36D0F23F2FF2A00891B5B /* AlertFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertFile.swift; sourceTree = "<group>"; };
+		52A36D1423F3059700891B5B /* CardsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsCell.swift; sourceTree = "<group>"; };
+		52A36D1623F30A6B00891B5B /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		5790239423F2EE39000AA216 /* Unit4Assessment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unit4Assessment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5790239723F2EE39000AA216 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5790239923F2EE39000AA216 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -92,6 +96,14 @@
 			path = APIClient;
 			sourceTree = "<group>";
 		};
+		52A36D1323F3041700891B5B /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				52A36D1423F3059700891B5B /* CardsCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		52E8244923F2FC7400EFD792 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +138,7 @@
 				52A36D0323F2FEBF00891B5B /* CardsView.swift */,
 				52A36D0523F2FECC00891B5B /* CreateView.swift */,
 				52A36D0723F2FED700891B5B /* SearchView.swift */,
+				52A36D1623F30A6B00891B5B /* EmptyView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -155,6 +168,7 @@
 				52A36D0923F2FEE700891B5B /* Model */,
 				52E8244B23F2FC9700EFD792 /* TabBar */,
 				52E8244C23F2FCA100EFD792 /* Views */,
+				52A36D1323F3041700891B5B /* Cells */,
 				52E8244A23F2FC8D00EFD792 /* View controllers */,
 				52E8244923F2FC7400EFD792 /* Supporting */,
 				579023A023F2EE3B000AA216 /* Assets.xcassets */,
@@ -280,6 +294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52A36D0423F2FEBF00891B5B /* CardsView.swift in Sources */,
+				52A36D1523F3059700891B5B /* CardsCell.swift in Sources */,
 				52A36D0823F2FED700891B5B /* SearchView.swift in Sources */,
 				52A36CFF23F2FE6C00891B5B /* SearchVC.swift in Sources */,
 				52A36D0623F2FECC00891B5B /* CreateView.swift in Sources */,
@@ -290,6 +305,7 @@
 				52A36CFD23F2FE5C00891B5B /* CreateVC.swift in Sources */,
 				5790239A23F2EE39000AA216 /* SceneDelegate.swift in Sources */,
 				52A36D1023F2FF2A00891B5B /* AlertFile.swift in Sources */,
+				52A36D1723F30A6B00891B5B /* EmptyView.swift in Sources */,
 				52A36CFB23F2FD5B00891B5B /* TabBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

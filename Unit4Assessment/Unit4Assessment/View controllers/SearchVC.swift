@@ -9,6 +9,14 @@
 import UIKit
 
 class SearchVC: UIViewController {
+    
+    private var searchView = SearchView()
+    
+    private var allCards = [Card]()
+    
+    override func loadView() {
+        view = searchView
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

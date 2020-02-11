@@ -9,13 +9,38 @@
 import UIKit
 
 class CardsView: UIView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    
+    public lazy var cardsCV: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        cv.backgroundColor = .systemBlue
+        return cv
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: UIScreen.main.bounds)
+        commonInit()
     }
-    */
-
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
+    
+    private func commonInit() {
+        setupCV()
+    }
+    
+    private func setupCV() {
+        addSubview(cardsCV)
+        cardsCV.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            cardsCV.topAnchor.constraint(equalTo: topAnchor),
+            cardsCV.leadingAnchor.constraint(equalTo: leadingAnchor),
+            cardsCV.trailingAnchor.constraint(equalTo: trailingAnchor),
+            cardsCV.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+    }
+    
 }
