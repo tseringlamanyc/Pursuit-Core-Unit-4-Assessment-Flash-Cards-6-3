@@ -9,7 +9,7 @@
 import UIKit
 
 class CardsCell: UICollectionViewCell {
-    
+        
     public lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -80,5 +80,9 @@ class CardsCell: UICollectionViewCell {
             answerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             answerLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
         ])
+    }
+    
+    public func updateUI (card: UserCards) {
+        titleLabel.text = card.title
     }
 }

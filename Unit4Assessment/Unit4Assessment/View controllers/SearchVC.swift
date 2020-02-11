@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DataPersistence
 
 class SearchVC: UIViewController {
     
@@ -26,7 +27,8 @@ class SearchVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBarController?.navigationItem.title = "Search"
+        view.backgroundColor = .systemBackground
+        navigationItem.title = "Search"
         searchView.searchCV.dataSource = self
         searchView.searchCV.delegate = self
         searchView.searchCV.register(SearchCell.self, forCellWithReuseIdentifier: "searchCell")
@@ -35,13 +37,15 @@ class SearchVC: UIViewController {
     }
     
     private func loadCards() {
-        CardsAPI.getCards { [weak self] (result) in
-            switch result {
-            case .failure(let appError):
-                print("\(appError)")
-            case .success(let cards):
-                self?.allCards = cards
-            }
+        guard let fileURL = Bundle.main.url(forResource: "cards", withExtension: "json") else {
+            fatalError()
+        }
+        do {
+            let data = try Data(contentsOf: fileURL)
+            let cardData = Card.getCards(from: data)
+            allCards = cardData
+        } catch {
+            print("nope")
         }
     }
 }
@@ -76,7 +80,7 @@ extension SearchVC: UISearchBarDelegate {
         guard !searchText.isEmpty else {
             loadCards()
             return
-    }
+        }
         allCards = allCards.filter {$0.cardTitle.lowercased().contains(searchText.lowercased())}
-  }
+    }
 }

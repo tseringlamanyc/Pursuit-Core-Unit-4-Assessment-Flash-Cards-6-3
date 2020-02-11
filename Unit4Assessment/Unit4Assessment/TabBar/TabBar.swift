@@ -7,32 +7,37 @@
 //
 
 import UIKit
+import DataPersistence
 
 class TabBar: UITabBarController {
     
+    private let dataPersistence = DataPersistence<UserCards>(filename: "users.plist")
+    
     private lazy var cardsVC: CardsVC = {
-       let vc = CardsVC()
+        let vc = CardsVC()
         vc.tabBarItem = UITabBarItem(title: "Cards", image: UIImage(systemName: "creditcard.fill"), tag: 0)
-        vc.navigationItem.title = "Your cards"
+        vc.dataPersistence = dataPersistence 
         return vc
     }()
     
     private lazy var createVC: CreateVC = {
-       let vc = CreateVC()
+        let vc = CreateVC()
         vc.tabBarItem = UITabBarItem(title: "Create", image: UIImage(systemName: "plus.square.fill"), tag: 1)
-        vc.navigationItem.title = "Create here"
+        vc.dataPersistence = dataPersistence 
         return vc
     }()
-
+    
     private lazy var searchVC: SearchVC = {
         let vc = SearchVC()
         vc.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 2)
-        vc.navigationItem.title = "Search"
         return vc
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewControllers = [cardsVC, createVC, searchVC]
+        viewControllers = [UINavigationController(rootViewController: cardsVC),
+                           UINavigationController(rootViewController: createVC),
+                            UINavigationController(rootViewController: searchVC)
+        ]
     }
 }

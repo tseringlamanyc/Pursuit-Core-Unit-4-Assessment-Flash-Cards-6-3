@@ -8,7 +8,19 @@
 
 import UIKit
 
+protocol SearchCellDelegate: AnyObject {
+    func didPress(cell: SearchCell)
+}
+
 class SearchCell: UICollectionViewCell {
+    
+    weak var delegate: SearchCellDelegate?
+    
+    private lazy var longPress: UILongPressGestureRecognizer = {
+        let gesture = UILongPressGestureRecognizer()
+        gesture.addTarget(self, action: #selector(didLongPress(gesture:)))
+        return gesture
+    }()
     
     public lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -26,12 +38,14 @@ class SearchCell: UICollectionViewCell {
         return label
     }()
     
-    public lazy var moreButton: UIButton = {
+    public lazy var addButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "plus.square.fill"), for: .normal)
         button.alpha = 1
         return button
     }()
+    
+    private var isTitle = false
     
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
@@ -47,16 +61,17 @@ class SearchCell: UICollectionViewCell {
         setupButton()
         setupAnswer()
         setupTitle()
+        addGestureRecognizer(longPress)
     }
     
     private func setupButton() {
-        addSubview(moreButton)
-        moreButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(addButton)
+        addButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            moreButton.topAnchor.constraint(equalTo: topAnchor),
-            moreButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            moreButton.heightAnchor.constraint(equalToConstant: 44),
-            moreButton.widthAnchor.constraint(equalTo: moreButton.widthAnchor)
+            addButton.topAnchor.constraint(equalTo: topAnchor),
+            addButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            addButton.heightAnchor.constraint(equalToConstant: 44),
+            addButton.widthAnchor.constraint(equalTo: addButton.widthAnchor)
         ])
     }
     
@@ -79,10 +94,36 @@ class SearchCell: UICollectionViewCell {
             answerLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
         ])
     }
-
+    
+    @objc
+    private func didLongPress(gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began || gesture.state == .changed {
+            return
+        }
+        isTitle.toggle()
+        self.animate()
+    }
+    
+    private func animate() {
+        let duration: Double = 1.0
+        if isTitle {
+            UIView.transition(with: self, duration: duration, options: [.transitionFlipFromRight], animations: {
+                self.titleLabel.alpha = 1.0
+                self.addButton.alpha = 1.0
+                self.answerLabel.alpha = 0.0
+            }, completion: nil)
+        } else {
+            UIView.transition(with: self, duration: duration, options: [.transitionFlipFromLeft], animations: {
+                self.titleLabel.alpha = 0.0
+                self.addButton.alpha = 0.0
+                self.answerLabel.alpha = 1.0
+            }, completion: nil)
+        }
+    }
+    
     public func updateUI(card: Card) {
         titleLabel.text = card.cardTitle
         answerLabel.text = card.facts.joined(separator: " ")
     }
-
+    
 }

@@ -8,13 +8,22 @@
 
 import Foundation
 
-struct AllCards: Codable {
+struct AllCards: Codable & Equatable {
     let cardListType, apiVersion: String
     let cards: [Card]
 }
 
-
-struct Card: Codable {
+struct Card: Codable & Equatable {
     let id, cardTitle: String
     let facts: [String]
+    
+    static func getCards(from jsonData: Data) -> [Card] {
+        do {
+            let allCards = try JSONDecoder().decode(AllCards.self, from: jsonData)
+            return allCards.cards
+        } catch {
+            print(error)
+            return []
+        }
+    }
 }

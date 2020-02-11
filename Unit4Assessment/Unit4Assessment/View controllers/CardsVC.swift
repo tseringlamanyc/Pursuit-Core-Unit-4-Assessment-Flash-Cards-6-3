@@ -7,35 +7,66 @@
 //
 
 import UIKit
+import DataPersistence
 
 class CardsVC: UIViewController {
     
     private let cardsView = CardsView()
     
+    private var userCards = [UserCards]() {
+        didSet {
+            cardsView.cardsCV.reloadData()
+            if userCards.isEmpty {
+                cardsView.cardsCV.backgroundView = EmptyView(title: "Cards", message: "No cards made yet")
+            } else {
+                cardsView.cardsCV.backgroundView = nil 
+            }
+        }
+    }
+    
+    public var createVC = CreateVC()
+    
+    public var dataPersistence: DataPersistence<UserCards>!
+    
     override func loadView() {
         view = cardsView
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        loadUserCards()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBarController?.navigationItem.title = "Your Cards"
+        navigationItem.title = "Your Cards"
         cardsView.cardsCV.dataSource = self
         cardsView.cardsCV.delegate = self
         cardsView.cardsCV.register(CardsCell.self, forCellWithReuseIdentifier: "cardsCell")
+        loadUserCards()
+    }
+    
+    private func loadUserCards() {
+        do {
+            userCards = try dataPersistence.loadItems()
+        } catch {
+            print("couldnt load items")
+        }
     }
 }
 
 extension CardsVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return userCards.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cardsCell", for: indexPath) as? CardsCell else {
             fatalError()
         }
-        cell.backgroundColor = .systemRed
+        cell.updateUI(card: userCards[indexPath.row])
+        cell.backgroundColor = .systemBackground
         return cell
     }
 }

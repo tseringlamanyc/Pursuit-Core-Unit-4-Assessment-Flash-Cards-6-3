@@ -7,10 +7,15 @@
 //
 
 import UIKit
+import DataPersistence
 
 class CreateVC: UIViewController {
     
-    private let createView = CreateView()
+    public let createView = CreateView()
+    
+    public var userCard: UserCards?
+    
+    public var dataPersistence: DataPersistence<UserCards>!
     
     override func loadView() {
         view = createView
@@ -18,10 +23,44 @@ class CreateVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBarController?.navigationItem.title = "Create Quiz"
-        tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .plain, target: self, action: nil)
-        tabBarController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: nil)
+        navigationItem.title = "Create Quiz"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .plain, target: self, action: #selector(makeCard(sender:)))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPreseed(sender:)))
         view.backgroundColor = .systemBackground
+        createView.textView1.delegate = self
+        createView.textField.delegate = self
+        createView.textView2.delegate = self
     }
+    
+    @objc
+    private func makeCard (sender: UIBarButtonItem) {
+//        guard let userCard = userCard else {
+//            fatalError()
+//        }
+        userCard = UserCards(title: createView.textField.text!)
+        do {
+            try dataPersistence.createItem(userCard!)
+            showAlert(title: "Sucess", message: "Card created")
+        } catch {
+            print("couldnt save")
+        }
+    }
+    
+    @objc
+    private func cancelPreseed(sender: UIBarButtonItem) {
+       
+    }
+}
+
+extension CreateVC: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        userCard?.title = textField.text ?? "no title"
+        return true
+    }
+}
+
+extension CreateVC: UITextViewDelegate {
     
 }

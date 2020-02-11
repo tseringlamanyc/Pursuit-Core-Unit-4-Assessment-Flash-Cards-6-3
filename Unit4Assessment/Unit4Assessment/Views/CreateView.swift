@@ -12,19 +12,20 @@ class CreateView: UIView {
     
     public lazy var textField: UITextField = {
         let tf = UITextField()
-        tf.backgroundColor = .systemRed
+        tf.backgroundColor = .systemGray5
+        tf.placeholder = "Enter title here"
         return tf
     }()
     
     public lazy var textView1: UITextView = {
         let tv = UITextView()
-        tv.backgroundColor = .systemBlue
+        tv.backgroundColor = .systemGray5
         return tv
     }()
     
     public lazy var textView2: UITextView = {
         let tv = UITextView()
-        tv.backgroundColor = .systemTeal
+        tv.backgroundColor = .systemGray5
         return tv
     }()
     
