@@ -9,6 +9,12 @@
 import UIKit
 
 class CardsCell: UICollectionViewCell {
+    
+    private lazy var longPress: UILongPressGestureRecognizer = {
+        let gesture = UILongPressGestureRecognizer()
+        gesture.addTarget(self, action: #selector(didLongPress(gesture:)))
+        return gesture
+    }()
         
     public lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -45,10 +51,13 @@ class CardsCell: UICollectionViewCell {
         commonInit()
     }
     
+    private var isTitle = true
+    
     private func commonInit() {
         setupTitle()
         setupAnswer()
         setupButton()
+        addGestureRecognizer(longPress)
     }
     
     private func setupButton() {
@@ -82,7 +91,34 @@ class CardsCell: UICollectionViewCell {
         ])
     }
     
+    @objc
+    private func didLongPress(gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began || gesture.state == .changed {
+            return
+        }
+        isTitle.toggle()
+        self.animate()
+    }
+    
+    private func animate() {
+        let duration: Double = 1.0
+        if isTitle {
+            UIView.transition(with: self, duration: duration, options: [.transitionFlipFromRight], animations: {
+                self.titleLabel.alpha = 1.0
+                self.moreButton.alpha = 1.0
+                self.answerLabel.alpha = 0.0
+            }, completion: nil)
+        } else {
+            UIView.transition(with: self, duration: duration, options: [.transitionFlipFromLeft], animations: {
+                self.titleLabel.alpha = 0.0
+                self.moreButton.alpha = 0.0
+                self.answerLabel.alpha = 1.0
+            }, completion: nil)
+        }
+    }
+    
     public func updateUI (card: UserCards) {
         titleLabel.text = card.title
+        answerLabel.text = card.description
     }
 }

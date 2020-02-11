@@ -45,7 +45,7 @@ class SearchCell: UICollectionViewCell {
         return button
     }()
     
-    private var isTitle = false
+    private var isTitle = true
     
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)

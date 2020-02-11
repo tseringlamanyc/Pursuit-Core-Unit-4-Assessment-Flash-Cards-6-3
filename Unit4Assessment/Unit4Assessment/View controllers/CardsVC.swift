@@ -24,8 +24,6 @@ class CardsVC: UIViewController {
         }
     }
     
-    public var createVC = CreateVC()
-    
     public var dataPersistence: DataPersistence<UserCards>!
     
     override func loadView() {

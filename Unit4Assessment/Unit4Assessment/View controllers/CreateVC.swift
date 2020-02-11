@@ -27,17 +27,14 @@ class CreateVC: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .plain, target: self, action: #selector(makeCard(sender:)))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPreseed(sender:)))
         view.backgroundColor = .systemBackground
+         createView.textField.delegate = self
         createView.textView1.delegate = self
-        createView.textField.delegate = self
         createView.textView2.delegate = self
     }
     
     @objc
     private func makeCard (sender: UIBarButtonItem) {
-//        guard let userCard = userCard else {
-//            fatalError()
-//        }
-        userCard = UserCards(title: createView.textField.text!)
+        userCard = UserCards(title: createView.textField.text!, description: createView.textView1.text! + createView.textView2.text!)
         do {
             try dataPersistence.createItem(userCard!)
             showAlert(title: "Sucess", message: "Card created")
@@ -62,5 +59,9 @@ extension CreateVC: UITextFieldDelegate {
 }
 
 extension CreateVC: UITextViewDelegate {
-    
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        textView.resignFirstResponder()
+        userCard?.description = textView.text ?? "no description"
+        return true 
+    }
 }
