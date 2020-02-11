@@ -21,31 +21,43 @@ class CreateVC: UIViewController {
         view = createView
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Create Quiz"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .plain, target: self, action: #selector(makeCard(sender:)))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPreseed(sender:)))
         view.backgroundColor = .systemBackground
-         createView.textField.delegate = self
+        createView.textField.delegate = self
         createView.textView1.delegate = self
         createView.textView2.delegate = self
     }
     
     @objc
     private func makeCard (sender: UIBarButtonItem) {
-        userCard = UserCards(title: createView.textField.text!, description: createView.textView1.text! + createView.textView2.text!)
-        do {
-            try dataPersistence.createItem(userCard!)
-            showAlert(title: "Sucess", message: "Card created")
-        } catch {
-            print("couldnt save")
-        }
+        
+//         if createView.textField.text?.isEmpty == false && createView.textView1.text.isEmpty == false && createView.textView2.text.isEmpty == false {
+//            sender.isEnabled = true
+            userCard = UserCards(title: createView.textField.text!, description: createView.textView1.text! + createView.textView2.text!)
+            do {
+                try dataPersistence.createItem(userCard!)
+                showAlert(title: "Sucess", message: "Card created")
+            } catch {
+                print("couldnt save")
+            }
+//         } else {
+//            showAlert(title: "Fail", message: "Please fill all 3 sections")
+//            sender.isEnabled = false
+//        }
     }
+    
     
     @objc
     private func cancelPreseed(sender: UIBarButtonItem) {
-       
+        
     }
 }
 
@@ -62,6 +74,6 @@ extension CreateVC: UITextViewDelegate {
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         textView.resignFirstResponder()
         userCard?.description = textView.text ?? "no description"
-        return true 
+        return true
     }
 }

@@ -8,7 +8,15 @@
 
 import UIKit
 
+protocol CardsCellDelegate: AnyObject {
+    func didPress(cell: CardsCell, card: UserCards)
+}
+
 class CardsCell: UICollectionViewCell {
+    
+    weak var delegate: CardsCellDelegate?
+    
+    public var userCard: UserCards!
     
     private lazy var longPress: UILongPressGestureRecognizer = {
         let gesture = UILongPressGestureRecognizer()
@@ -38,6 +46,7 @@ class CardsCell: UICollectionViewCell {
         let button = UIButton()
         button.setImage(UIImage(systemName: "list.dash"), for: .normal)
         button.alpha = 1
+        button.addTarget(self, action: #selector(moreButton(sender:)), for: .touchUpInside)
         return button
     }()
     
@@ -98,6 +107,11 @@ class CardsCell: UICollectionViewCell {
         }
         isTitle.toggle()
         self.animate()
+    }
+    
+    @objc
+    private func moreButton(sender: UIButton) {
+        delegate?.didPress(cell: self, card: userCard)
     }
     
     private func animate() {

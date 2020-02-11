@@ -41,7 +41,6 @@ class CardsVC: UIViewController {
         cardsView.cardsCV.dataSource = self
         cardsView.cardsCV.delegate = self
         cardsView.cardsCV.register(CardsCell.self, forCellWithReuseIdentifier: "cardsCell")
-        loadUserCards()
     }
     
     private func loadUserCards() {
@@ -63,6 +62,8 @@ extension CardsVC: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cardsCell", for: indexPath) as? CardsCell else {
             fatalError()
         }
+        cell.delegate = self
+        cell.userCard = userCards[indexPath.row]
         cell.updateUI(card: userCards[indexPath.row])
         cell.backgroundColor = .systemBackground
         return cell
@@ -76,5 +77,39 @@ extension CardsVC: UICollectionViewDelegateFlowLayout {
            let itemWidth: CGFloat = maxSize.width
            return CGSize(width: itemWidth, height: 264)
        }
+}
+
+extension CardsVC: CardsCellDelegate {
+    func didPress(cell: CardsCell, card: UserCards) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { alertAction in
+            self.delete(card: card)
+        }
+        alertController.addAction(cancelAction)
+        alertController.addAction(deleteAction)
+        present(alertController, animated: true)
+    }
+    
+    private func delete(card: UserCards) {
+        guard let index = userCards.firstIndex(of: card) else {
+            return
+        }
+        do {
+            try dataPersistence.deleteItem(at: index)
+        } catch {
+            print("couldnt delete")
+        }
+    }
+}
+
+extension CardsVC: DataPersistenceDelegate {
+    func didSaveItem<T>(_ persistenceHelper: DataPersistence<T>, item: T) where T : Decodable, T : Encodable, T : Equatable {
+        loadUserCards()
+    }
+    
+    func didDeleteItem<T>(_ persistenceHelper: DataPersistence<T>, item: T) where T : Decodable, T : Encodable, T : Equatable {
+        loadUserCards()
+    }
 }
 
