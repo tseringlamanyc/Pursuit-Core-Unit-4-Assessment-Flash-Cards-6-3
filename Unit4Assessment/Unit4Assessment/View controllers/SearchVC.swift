@@ -29,6 +29,7 @@ class SearchVC: UIViewController {
         searchView.searchCV.dataSource = self
         searchView.searchCV.delegate = self
         searchView.searchCV.register(SearchCell.self, forCellWithReuseIdentifier: "searchCell")
+        searchView.searchBar.delegate = self
         loadCards()
     }
     
@@ -58,8 +59,6 @@ extension SearchVC: UICollectionViewDataSource {
         cell.backgroundColor = .systemBackground
         return cell
     }
-    
-    
 }
 
 extension SearchVC: UICollectionViewDelegateFlowLayout {
@@ -69,4 +68,14 @@ extension SearchVC: UICollectionViewDelegateFlowLayout {
         let itemWidth: CGFloat = maxSize.width
         return CGSize(width: itemWidth, height: 264)
     }
+}
+
+extension SearchVC: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else {
+            loadCards()
+            return
+    }
+        allCards = allCards.filter {$0.cardTitle.lowercased().contains(searchText.lowercased())}
+  }
 }
