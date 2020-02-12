@@ -87,6 +87,12 @@ extension SearchVC: UISearchBarDelegate {
         }
         allCards = allCards.filter {$0.cardTitle.lowercased().contains(searchText.lowercased())}
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if searchView.searchBar.isFirstResponder {
+        searchView.searchBar.resignFirstResponder()
+      }
+    }
 }
 
 extension SearchVC: SearchCellDelegate {
