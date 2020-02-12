@@ -47,11 +47,15 @@ class CreateVC: UIViewController {
             createView.textView1.resignFirstResponder()
             createView.textView2.resignFirstResponder()
             createView.textField.resignFirstResponder()
-            do {
-                try dataPersistence.createItem(userCreated)
-                showAlert(title: "Sucess", message: "Card created")
-            } catch {
-                print("couldnt save")
+            if dataPersistence.hasItemBeenSaved(userCreated) {
+                showAlert(title: "Fail", message: "This card has already been created")
+            } else {
+                do {
+                    try dataPersistence.createItem(userCreated)
+                    showAlert(title: "Sucess", message: "Card created")
+                } catch {
+                    print("couldnt save")
+                }
             }
         }
         sender.isEnabled = true
