@@ -14,7 +14,7 @@ struct AllCards: Codable & Equatable {
 }
 
 struct Card: Codable & Equatable {
-    let id, cardTitle: String
+    let cardTitle: String
     let facts: [String]
     
     static func getCards(from jsonData: Data) -> [Card] {

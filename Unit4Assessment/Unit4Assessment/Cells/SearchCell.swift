@@ -9,18 +9,14 @@
 import UIKit
 
 protocol SearchCellDelegate: AnyObject {
-    func didPress(cell: SearchCell)
+    func didPress(card: Card)
 }
 
 class SearchCell: UICollectionViewCell {
     
     weak var delegate: SearchCellDelegate?
     
-    private lazy var longPress: UILongPressGestureRecognizer = {
-        let gesture = UILongPressGestureRecognizer()
-        gesture.addTarget(self, action: #selector(didLongPress(gesture:)))
-        return gesture
-    }()
+    public var aCard: Card!
     
     public lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -42,6 +38,7 @@ class SearchCell: UICollectionViewCell {
         let button = UIButton()
         button.setImage(UIImage(systemName: "plus.square.fill"), for: .normal)
         button.alpha = 1
+        button.addTarget(self, action: #selector(buttonPressed(sender:)), for: .touchUpInside)
         return button
     }()
     
@@ -61,7 +58,6 @@ class SearchCell: UICollectionViewCell {
         setupButton()
         setupAnswer()
         setupTitle()
-        addGestureRecognizer(longPress)
     }
     
     private func setupButton() {
@@ -93,6 +89,11 @@ class SearchCell: UICollectionViewCell {
             answerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             answerLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
         ])
+    }
+    
+    @objc
+    private func buttonPressed(sender: UIButton) {
+        delegate?.didPress(card: aCard)
     }
     
     @objc

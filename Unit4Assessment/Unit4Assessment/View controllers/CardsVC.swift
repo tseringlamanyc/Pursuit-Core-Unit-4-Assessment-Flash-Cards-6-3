@@ -13,7 +13,7 @@ class CardsVC: UIViewController {
     
     private let cardsView = CardsView()
     
-    private var userCards = [UserCards]() {
+    private var userCards = [Card]() {
         didSet {
             cardsView.cardsCV.reloadData()
             if userCards.isEmpty {
@@ -24,15 +24,10 @@ class CardsVC: UIViewController {
         }
     }
     
-    public var dataPersistence: DataPersistence<UserCards>!
+    public var dataPersistence: DataPersistence<Card>!
     
     override func loadView() {
         view = cardsView
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        loadUserCards()
     }
     
     override func viewDidLoad() {
@@ -41,14 +36,31 @@ class CardsVC: UIViewController {
         cardsView.cardsCV.dataSource = self
         cardsView.cardsCV.delegate = self
         cardsView.cardsCV.register(CardsCell.self, forCellWithReuseIdentifier: "cardsCell")
+        loadUserCards()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        loadUserCards()
     }
     
     private func loadUserCards() {
         do {
             userCards = try dataPersistence.loadItems()
+            userCards.reverse()
         } catch {
             print("couldnt load items")
         }
+    }
+}
+
+extension CardsVC: DataPersistenceDelegate {
+    func didSaveItem<T>(_ persistenceHelper: DataPersistence<T>, item: T) where T : Decodable, T : Encodable, T : Equatable {
+        loadUserCards()
+    }
+    
+    func didDeleteItem<T>(_ persistenceHelper: DataPersistence<T>, item: T) where T : Decodable, T : Encodable, T : Equatable {
+        loadUserCards()
     }
 }
 
@@ -62,9 +74,10 @@ extension CardsVC: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cardsCell", for: indexPath) as? CardsCell else {
             fatalError()
         }
+        let aCard = userCards[indexPath.row]
+        cell.userCard = aCard
         cell.delegate = self
-        cell.userCard = userCards[indexPath.row]
-        cell.updateUI(card: userCards[indexPath.row])
+        cell.updateUI(card: aCard)
         cell.backgroundColor = .systemBackground
         return cell
     }
@@ -73,14 +86,14 @@ extension CardsVC: UICollectionViewDataSource {
 extension CardsVC: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-           let maxSize = UIScreen.main.bounds.size
-           let itemWidth: CGFloat = maxSize.width
-           return CGSize(width: itemWidth, height: 264)
-       }
+        let maxSize = UIScreen.main.bounds.size
+        let itemWidth: CGFloat = maxSize.width
+        return CGSize(width: itemWidth, height: 264)
+    }
 }
 
 extension CardsVC: CardsCellDelegate {
-    func didPress(cell: CardsCell, card: UserCards) {
+    func didPress(cell: CardsCell, card: Card) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { alertAction in
@@ -91,25 +104,16 @@ extension CardsVC: CardsCellDelegate {
         present(alertController, animated: true)
     }
     
-    private func delete(card: UserCards) {
+    private func delete(card: Card) {
         guard let index = userCards.firstIndex(of: card) else {
             return
         }
         do {
             try dataPersistence.deleteItem(at: index)
+            showAlert(title: "Deleted", message: "Removed card")
         } catch {
             print("couldnt delete")
         }
-    }
-}
-
-extension CardsVC: DataPersistenceDelegate {
-    func didSaveItem<T>(_ persistenceHelper: DataPersistence<T>, item: T) where T : Decodable, T : Encodable, T : Equatable {
-        loadUserCards()
-    }
-    
-    func didDeleteItem<T>(_ persistenceHelper: DataPersistence<T>, item: T) where T : Decodable, T : Encodable, T : Equatable {
-        loadUserCards()
     }
 }
 

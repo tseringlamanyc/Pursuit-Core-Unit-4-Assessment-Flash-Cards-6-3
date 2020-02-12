@@ -9,14 +9,14 @@
 import UIKit
 
 protocol CardsCellDelegate: AnyObject {
-    func didPress(cell: CardsCell, card: UserCards)
+    func didPress(cell: CardsCell, card: Card)
 }
 
 class CardsCell: UICollectionViewCell {
     
     weak var delegate: CardsCellDelegate?
     
-    public var userCard: UserCards!
+    public var userCard: Card!
     
     private lazy var longPress: UILongPressGestureRecognizer = {
         let gesture = UILongPressGestureRecognizer()
@@ -131,8 +131,8 @@ class CardsCell: UICollectionViewCell {
         }
     }
     
-    public func updateUI (card: UserCards) {
-        titleLabel.text = card.title
-        answerLabel.text = card.description
+    public func updateUI (card: Card) {
+        titleLabel.text = card.cardTitle
+        answerLabel.text = card.facts.joined(separator: " ")
     }
 }

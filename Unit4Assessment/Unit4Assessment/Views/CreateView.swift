@@ -77,7 +77,4 @@ class CreateView: UIView {
             textView2.heightAnchor.constraint(equalTo: textView1.heightAnchor)
         ])
     }
-    
-    
-    
 }

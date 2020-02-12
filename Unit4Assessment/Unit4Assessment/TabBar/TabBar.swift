@@ -11,7 +11,7 @@ import DataPersistence
 
 class TabBar: UITabBarController {
     
-    private let dataPersistence = DataPersistence<UserCards>(filename: "users.plist")
+    private let dataPersistence = DataPersistence<Card>(filename: "users.plist")
     
     private lazy var cardsVC: CardsVC = {
         let vc = CardsVC()
@@ -30,6 +30,7 @@ class TabBar: UITabBarController {
     private lazy var searchVC: SearchVC = {
         let vc = SearchVC()
         vc.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 2)
+        vc.dataPersistence = dataPersistence
         return vc
     }()
     

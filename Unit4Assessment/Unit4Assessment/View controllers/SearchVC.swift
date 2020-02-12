@@ -21,6 +21,8 @@ class SearchVC: UIViewController {
         }
     }
     
+    public var dataPersistence: DataPersistence<Card>!
+    
     override func loadView() {
         view = searchView
     }
@@ -61,6 +63,8 @@ extension SearchVC: UICollectionViewDataSource {
         }
         let aCard = allCards[indexPath.row]
         cell.updateUI(card: aCard)
+        cell.delegate = self 
+        cell.aCard = aCard
         cell.backgroundColor = .systemBackground
         return cell
     }
@@ -82,5 +86,25 @@ extension SearchVC: UISearchBarDelegate {
             return
         }
         allCards = allCards.filter {$0.cardTitle.lowercased().contains(searchText.lowercased())}
+    }
+}
+
+extension SearchVC: SearchCellDelegate {
+    
+    func didPress(card: Card) {
+        if dataPersistence.hasItemBeenSaved(card) {
+            showAlert(title: "Error", message: "This card has already been saved")
+        } else {
+            saveCard(card: card)
+        }
+    }
+    
+    private func saveCard(card: Card) {
+        do {
+            try dataPersistence.createItem(card)
+            showAlert(title: "Success", message: "Card added locally to your phone")
+        } catch {
+            showAlert(title: "Fail", message: "Couldnt save this card")
+        }
     }
 }

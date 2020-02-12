@@ -13,9 +13,9 @@ class CreateVC: UIViewController {
     
     public let createView = CreateView()
     
-    public var userCard: UserCards?
+    public var userCard: Card?
     
-    public var dataPersistence: DataPersistence<UserCards>!
+    public var dataPersistence: DataPersistence<Card>!
     
     override func loadView() {
         view = createView
@@ -29,7 +29,7 @@ class CreateVC: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "Create Quiz"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .plain, target: self, action: #selector(makeCard(sender:)))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPreseed(sender:)))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(cancelPreseed(sender:)))
         view.backgroundColor = .systemBackground
         createView.textField.delegate = self
         createView.textView1.delegate = self
@@ -39,25 +39,14 @@ class CreateVC: UIViewController {
     @objc
     private func makeCard (sender: UIBarButtonItem) {
         
-//         if createView.textField.text?.isEmpty == false && createView.textView1.text.isEmpty == false && createView.textView2.text.isEmpty == false {
-//            sender.isEnabled = true
-            userCard = UserCards(title: createView.textField.text!, description: createView.textView1.text! + createView.textView2.text!)
-            do {
-                try dataPersistence.createItem(userCard!)
-                showAlert(title: "Sucess", message: "Card created")
-            } catch {
-                print("couldnt save")
-            }
-//         } else {
-//            showAlert(title: "Fail", message: "Please fill all 3 sections")
-//            sender.isEnabled = false
-//        }
+       
+        
     }
     
     
     @objc
     private func cancelPreseed(sender: UIBarButtonItem) {
-        
+      
     }
 }
 
@@ -65,7 +54,6 @@ extension CreateVC: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        userCard?.title = textField.text ?? "no title"
         return true
     }
 }
@@ -73,7 +61,6 @@ extension CreateVC: UITextFieldDelegate {
 extension CreateVC: UITextViewDelegate {
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         textView.resignFirstResponder()
-        userCard?.description = textView.text ?? "no description"
         return true
     }
 }
