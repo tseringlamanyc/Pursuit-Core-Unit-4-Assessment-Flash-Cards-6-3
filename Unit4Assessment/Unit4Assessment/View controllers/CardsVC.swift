@@ -32,11 +32,11 @@ class CardsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadUserCards()
         navigationItem.title = "Your Cards"
         cardsView.cardsCV.dataSource = self
         cardsView.cardsCV.delegate = self
         cardsView.cardsCV.register(CardsCell.self, forCellWithReuseIdentifier: "cardsCell")
-        loadUserCards()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,7 +47,6 @@ class CardsVC: UIViewController {
     private func loadUserCards() {
         do {
             userCards = try dataPersistence.loadItems()
-            userCards.reverse()
         } catch {
             print("couldnt load items")
         }
@@ -76,6 +75,7 @@ extension CardsVC: UICollectionViewDataSource {
         }
         let aCard = userCards[indexPath.row]
         cell.userCard = aCard
+        cell.dataPersistence = dataPersistence
         cell.delegate = self
         cell.updateUI(card: aCard)
         cell.backgroundColor = .systemBackground
@@ -93,6 +93,7 @@ extension CardsVC: UICollectionViewDelegateFlowLayout {
 }
 
 extension CardsVC: CardsCellDelegate {
+    
     func didPress(cell: CardsCell, card: Card) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
@@ -110,8 +111,9 @@ extension CardsVC: CardsCellDelegate {
         }
         do {
             try dataPersistence.deleteItem(at: index)
-            showAlert(title: "Deleted", message: "Removed card")
-        } catch {
+            showAlert(title: "Success", message: "Card deleted")
+            } catch {
+            showAlert(title: "Error", message: "Could delete due to \(error)")
             print("couldnt delete")
         }
     }

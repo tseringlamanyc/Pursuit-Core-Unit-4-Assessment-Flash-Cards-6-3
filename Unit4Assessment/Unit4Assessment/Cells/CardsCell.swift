@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DataPersistence
 
 protocol CardsCellDelegate: AnyObject {
     func didPress(cell: CardsCell, card: Card)
@@ -15,6 +16,8 @@ protocol CardsCellDelegate: AnyObject {
 class CardsCell: UICollectionViewCell {
     
     weak var delegate: CardsCellDelegate?
+    
+    public var dataPersistence: DataPersistence<Card>!
     
     public var userCard: Card!
     

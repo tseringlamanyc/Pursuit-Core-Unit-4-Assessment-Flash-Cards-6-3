@@ -38,15 +38,27 @@ class CreateVC: UIViewController {
     
     @objc
     private func makeCard (sender: UIBarButtonItem) {
-        
-       
-        
+        if createView.textField.text?.isEmpty == true || createView.textView1.text.isEmpty == true || createView.textView2.text.isEmpty == true {
+            sender.isEnabled = false
+            showAlert(title: "Fail", message: "Please fill all fields")
+        } else {
+            let userCreated = Card(cardTitle: createView.textField.text!, facts: [createView.textView1.text, createView.textView2.text])
+            do {
+                try dataPersistence.createItem(userCreated)
+                showAlert(title: "Sucess", message: "Card created")
+            } catch {
+                print("couldnt save")
+            }
+        }
+        sender.isEnabled = true
     }
     
     
     @objc
     private func cancelPreseed(sender: UIBarButtonItem) {
-      
+        createView.textField.text = ""
+        createView.textView2.text = ""
+        createView.textView1.text = ""
     }
 }
 
