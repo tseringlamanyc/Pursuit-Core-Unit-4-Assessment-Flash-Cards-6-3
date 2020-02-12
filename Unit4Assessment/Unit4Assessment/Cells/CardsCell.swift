@@ -136,6 +136,6 @@ class CardsCell: UICollectionViewCell {
     
     public func updateUI (card: Card) {
         titleLabel.text = card.cardTitle
-        answerLabel.text = card.facts.joined(separator: " ")
+        answerLabel.text = "Fact 1: \(card.facts[0])\nFact 2: \(card.facts[1])"
     }
 }

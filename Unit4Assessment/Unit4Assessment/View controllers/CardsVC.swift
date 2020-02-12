@@ -111,7 +111,11 @@ extension CardsVC: CardsCellDelegate {
         }
         do {
             try dataPersistence.deleteItem(at: index)
-            showAlert(title: "Success", message: "Card deleted")
+            
+            UIView.transition(with: cardsView, duration: 1.0, options: [.transitionFlipFromLeft], animations: {
+            }) { (done) in
+                self.showAlert(title: "Success", message: "Card deleted")
+            }
             } catch {
             showAlert(title: "Error", message: "Could delete due to \(error)")
             print("couldnt delete")

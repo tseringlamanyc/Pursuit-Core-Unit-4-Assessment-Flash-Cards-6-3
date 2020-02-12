@@ -38,11 +38,15 @@ class CreateVC: UIViewController {
     
     @objc
     private func makeCard (sender: UIBarButtonItem) {
+        
         if createView.textField.text?.isEmpty == true || createView.textView1.text.isEmpty == true || createView.textView2.text.isEmpty == true {
             sender.isEnabled = false
             showAlert(title: "Fail", message: "Please fill all fields")
         } else {
             let userCreated = Card(cardTitle: createView.textField.text!, facts: [createView.textView1.text, createView.textView2.text])
+            createView.textView1.resignFirstResponder()
+            createView.textView2.resignFirstResponder()
+            createView.textField.resignFirstResponder()
             do {
                 try dataPersistence.createItem(userCreated)
                 showAlert(title: "Sucess", message: "Card created")
@@ -71,6 +75,7 @@ extension CreateVC: UITextFieldDelegate {
 }
 
 extension CreateVC: UITextViewDelegate {
+    
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         textView.resignFirstResponder()
         return true

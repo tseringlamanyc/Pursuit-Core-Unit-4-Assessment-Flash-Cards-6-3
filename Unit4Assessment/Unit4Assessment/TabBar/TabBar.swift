@@ -16,7 +16,8 @@ class TabBar: UITabBarController {
     private lazy var cardsVC: CardsVC = {
         let vc = CardsVC()
         vc.tabBarItem = UITabBarItem(title: "Cards", image: UIImage(systemName: "creditcard.fill"), tag: 0)
-        vc.dataPersistence = dataPersistence 
+        vc.dataPersistence = dataPersistence
+        vc.dataPersistence.delegate = vc 
         return vc
     }()
     

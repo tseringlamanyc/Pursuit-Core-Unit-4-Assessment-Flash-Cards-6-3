@@ -18,6 +18,12 @@ class SearchCell: UICollectionViewCell {
     
     public var aCard: Card!
     
+    private lazy var longPress: UILongPressGestureRecognizer = {
+        let gesture = UILongPressGestureRecognizer()
+        gesture.addTarget(self, action: #selector(didLongPress(gesture:)))
+        return gesture
+    }()
+    
     public lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -58,6 +64,7 @@ class SearchCell: UICollectionViewCell {
         setupButton()
         setupAnswer()
         setupTitle()
+        addGestureRecognizer(longPress)
     }
     
     private func setupButton() {

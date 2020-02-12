@@ -80,14 +80,16 @@ extension SearchVC: UICollectionViewDelegateFlowLayout {
 }
 
 extension SearchVC: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard !searchText.isEmpty else {
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        guard !(searchBar.text!.isEmpty) else {
             loadCards()
             return
         }
-        allCards = allCards.filter {$0.cardTitle.lowercased().contains(searchText.lowercased())}
+        allCards = allCards.filter {$0.cardTitle.lowercased().contains(searchBar.text!.lowercased())}
     }
-    
+        
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if searchView.searchBar.isFirstResponder {
         searchView.searchBar.resignFirstResponder()
