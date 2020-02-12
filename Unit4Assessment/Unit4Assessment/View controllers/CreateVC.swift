@@ -46,7 +46,7 @@ class CreateVC: UIViewController {
         
         if title?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 ||  fact1?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 ||  fact2?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
             sender.isEnabled = false
-            showAlert(title: "Fail", message: "Avoid spaces") }
+            showAlert(title: "Fail", message: "Please fill all fields") }
               else
             if title?.isEmpty == true || fact1?.isEmpty == true || fact2?.isEmpty == true {
                 sender.isEnabled = false
